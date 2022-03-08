@@ -14,29 +14,12 @@
 
 #include <Arduino.h>
 #include <ctype.h>
-
+ 
 #include "SDP3x.h"
 #include "U8g2lib.h"   // LCD Screen includes
 #include "U8x8lib.h"  // LCD Screen font includes
 
 
-
-void initTime(){
-  time_t epochTime;
-  configTime(0,0, "pool.ntp.org", "time.nist.gov");
-
-  while(true){
-    epochTime = time(NULL);
-
-    if (epochTime == 0){
-      Serial.println("Fetching NTP epoch time failed! Retry in 2s");
-      delay(2000);
-    } else {
-      Serial.printf("Fetched NTP time: %lu.\r\n", epochTime);
-      break;
-    }
-  }
-}
 
 // LCD Screen
 U8G2_SSD1306_128X64_NONAME_F_SW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
@@ -143,7 +126,7 @@ void LCD_Print_Float(int x, int y, float f){
 
 // function to play a tone for .2 seconds
 
-#define TONE_PIN 4
+#define TONE_PIN 13 
 
 void play_tone(int duration){
   digitalWrite(TONE_PIN, HIGH);
@@ -427,9 +410,9 @@ void loop() {
       // *** state execution commands
       // first print the results to serial 
       Serial.println("Starting Print");
-      for (int i=0; i<exhaleCount; i++)  // print the exhale data
+      for (unsigned int i=0; i<exhaleCount; i++)  // print the exhale data
         Serial.println(exhalePressure[i], DEC);
-      for (int i=0; i<inhaleCount; i++)  // print the inhale data
+      for (unsigned int i=0; i<inhaleCount; i++)  // print the inhale data
         Serial.println(inhalePressure[i], DEC);
 
       // Check if the exhale - inhale cycle was successful  
